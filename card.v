@@ -4,6 +4,7 @@ module card(clk, rst, cur, s, mf, ms,
             sel, blink, hidden);
 
   input clk; // the clock signal.
+  input rst; // the reset signal.
   input cur; // the cursor signal.
   input s; // the button s hit signal.
   input mf; // the match failure signal.
@@ -11,7 +12,7 @@ module card(clk, rst, cur, s, mf, ms,
 
   output sel; // the card selected signal.
   output blink; // the card blinking signal.
-  output hidden; S// the card hidden signal.
+  output hidden; // the card hidden signal.
 
   /** States encoding scheme:
    *  00001: the normal and initial state of every card.
