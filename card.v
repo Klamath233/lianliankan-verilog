@@ -1,5 +1,18 @@
 `timescale 1ns / 1ps
 
+/** @file card.v
+ *  @author Xi Han
+ *  
+ *  The module for the cards, the basic elements of the game.
+ *  The cards can have many states; they (and the output associated)
+ *  will be needed by the display module and the algorithm module.
+ *  For example, the blink output will instruct the display module 
+ *  to create a blinking effect for the particular card.
+ *  The algorithm module will see the sel signal to determine which 
+ *  card(s) is(are) selected, and generate mf/ms signal accordingly.
+ *
+ */
+ 
 module card(clk, rst, cur, s, mf, ms,
             sel, blink, hidden);
 
@@ -45,7 +58,7 @@ module card(clk, rst, cur, s, mf, ms,
         if (cur && s) begin
           __state <= 5'b00100;
         end else if (cur && !s) begin
-          __state <= 5'b00010
+          __state <= 5'b00010;
         end else if (!cur) begin
           __state <= 5'b00001;
         end

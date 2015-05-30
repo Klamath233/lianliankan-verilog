@@ -57,7 +57,7 @@ module cursor(clk, rst, up, down, left, right,
   
   generate 
     genvar i;
-    for (i = 0; i < 35; i = i + 1) begin
+    for (i = 0; i < 36; i = i + 1) begin
       always @* begin
         if (__state == i) begin
           __cur_bus[i] = 1;
