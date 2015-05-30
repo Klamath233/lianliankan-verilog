@@ -12,8 +12,9 @@ module cursor(clk, rst, up, down, left, right,
 
   output [35:0] cur_bus;
 
-  short __state = 0;
-
+  reg [5:0] __state = 0;
+  reg [35:0] __cur_bus;
+  
   always @(posedge clk or posedge rst) begin
     if (rst) begin
       // reset
@@ -31,7 +32,7 @@ module cursor(clk, rst, up, down, left, right,
         if (__state / 6 == 5) begin
           __state = __state - 30;
         end else begin
-          __state = state + 6;
+          __state = __state + 6;
         end
       end
 
@@ -52,14 +53,21 @@ module cursor(clk, rst, up, down, left, right,
       end
     end
   end
-
-  integer i;
-  for (i = 0; i < 35; i = i + 1) begin
-    if (__state == i) begin
-      assign cur_bus[i] = 1;
-    end else begin
-      assign cur_bus[i] = 0;
+  
+  
+  generate 
+    genvar i;
+    for (i = 0; i < 35; i = i + 1) begin
+      always @* begin
+        if (__state == i) begin
+          __cur_bus[i] = 1;
+        end else begin
+          __cur_bus[i] = 0;
+        end
+      end
     end
-  end
+  endgenerate
+  
+  assign cur_bus = __cur_bus;
 
 endmodule
