@@ -1,5 +1,14 @@
 `timescale 1ns / 1ps
 
+/** @file cursor.v
+ *  @author Xi Han
+ *  
+ *  This module represents the state of the cursor. The state is a six-bit
+ *  integer dividing which by 6 is the row number and the remainder is the
+ *  column number.
+ *
+ */
+
 module cursor(clk, rst, up, down, left, right,
               cur_bus);
 
