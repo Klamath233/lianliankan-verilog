@@ -69,9 +69,9 @@ module cursor(clk, rst, up, down, left, right,
     for (i = 0; i < 36; i = i + 1) begin
       always @* begin
         if (__state == i) begin
-          __cur_bus[i] = 1;
+          __cur_bus[35 - i] = 1;
         end else begin
-          __cur_bus[i] = 0;
+          __cur_bus[35 - i] = 0;
         end
       end
     end
