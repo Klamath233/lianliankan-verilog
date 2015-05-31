@@ -14,7 +14,7 @@
  */
  
 module card(clk, rst, cur, s, mf, ms,
-            sel, blink, hidden);
+            sel, blink, hidden, state_debug);
 
   input clk; // the clock signal.
   input rst; // the reset signal.
@@ -26,6 +26,7 @@ module card(clk, rst, cur, s, mf, ms,
   output sel; // the card selected signal.
   output blink; // the card blinking signal.
   output hidden; // the card hidden signal.
+  output [4:0] state_debug;
 
   /** States encoding scheme:
    *  00001: the normal and initial state of every card.
@@ -34,7 +35,7 @@ module card(clk, rst, cur, s, mf, ms,
    *  01000: the selected state under cursor.
    *  10000: the matched/success state.
    */
-  reg [5:0] __state = 5'b00001;
+  reg [4:0] __state = 5'b00001;
 
   // The registers driving the outputs.
   reg __sel = 0;
@@ -56,7 +57,7 @@ module card(clk, rst, cur, s, mf, ms,
         end
       end else if (__state == 5'b00010) begin
         if (cur && s) begin
-          __state <= 5'b00100;
+          __state <= 5'b01000;
         end else if (cur && !s) begin
           __state <= 5'b00010;
         end else if (!cur) begin
@@ -78,9 +79,9 @@ module card(clk, rst, cur, s, mf, ms,
         end else if (mf) begin
           __state <= 5'b00010;
         end else if (cur && s) begin
-          __state <= 5'b00001;
+          __state <= 5'b00010;
         end else if (cur && !s) begin
-          __state <= 5'b0100;
+          __state <= 5'b01000;
         end else if (!cur) begin
           __state <= 5'b00100;
         end
@@ -132,5 +133,5 @@ module card(clk, rst, cur, s, mf, ms,
   assign sel = __sel;
   assign blink = __blink;
   assign hidden = __hidden;
-
+  assign state_debug = __state;
 endmodule
