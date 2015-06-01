@@ -1,12 +1,20 @@
 `timescale 1ns / 1ps
 
-module vga_timing(clk100_in, rgb_out, hs_out, vs_out);
+module vga_timing(clk100_in, r, g, b, hidden_bus, blink_bus, sel_bus,
+                  rgb_out, hs_out, vs_out, addr);
 
   input clk100_in;
+  input [35:0] hidden_bus;
+  input [35:0] blink_bus;
+  input [35:0] sel_bus;
+  input [2:0] r;
+  input [2:0] g;
+  input [1:0] b;
 
   output [7:0] rgb_out;
   output hs_out;
   output vs_out;
+  output [5:0] addr;
 
   reg clk25 = 0;
   reg clk2 = 0;
@@ -19,29 +27,68 @@ module vga_timing(clk100_in, rgb_out, hs_out, vs_out);
   reg __hs_out;
   reg __vs_out;
 
+  reg [35:0] __hidden_bus;
+  reg [35:0] __blink_bus;
+  reg [35:0] __sel_bus;
+  reg [2:0] __r;
+  reg [2:0] __g;
+  reg [2:0] __b;
+  
+  reg [5:0] __addr;
+  
+  // This block read all the data needed from the other modules.
+  always @(posedge clk100_in) begin
+    __hidden_bus <= hidden_bus;
+    __blink_bus <= blink_bus;
+    __sel_bus <= __sel_bus;
+    if (hc >= 88 && vc >= 8) begin
+      __addr <= (hc - 88) / 80 * 6 + (vc - 8) / 80;
+    end
+    __r <= r;
+    __g <= g;
+    __b <= b;
+  end
+  
   always @(posedge clk100_in) begin
     counter <= counter + 1;
     if (counter == 2'b11) begin
       clk25 <= 1;
       counter <= 2'b00;
-    else begin
+    end else begin
       clk25 <= 0;
     end
   end
 
   always @(posedge clk100_in) begin
     clk2_counter <= clk2_counter + 1;
-    if (cclk2_ounter == 25'b1011111010111100000111111) begin
-      clk2 <= 1;
+    if (clk2_counter == 25'b1011111010111100000111111) begin
+      clk2 <= ~clk2;
       clk2_counter <= 25'b0000000000000000000000000;
-    else begin
-      clk2 <= 0;
+    end else begin
+      clk2 <= clk2;
     end
   end
 
   always @(clk25) begin
     if (hc < 640 && vc < 480) begin
-      __rgb_out <= 8'b11111111;
+      if (hc < 88 || hc >= 552 || (hc - 88) % 80 >= 64 ||
+          vc < 8 || vc >= 472 || (vc - 8) % 80 >= 64)
+      begin
+        __rgb_out <= 8'b00000000;
+      end else if (__hidden_bus[(hc - 88) / 80 * 6 + (vc - 8) / 80] == 1) begin
+        __rgb_out <= 8'b00000000;
+      end else if (__blink_bus[(hc - 88) / 80 * 6 + (vc - 8) / 80] == 1
+                   && clk2 == 1)
+      begin
+        __rgb_out <= 8'b00000000;
+      end else if (__sel_bus[(hc - 88) / 80 * 6 + (vc - 8) / 80] == 1 &&
+                   ((hc - 88) % 80 == 0 || (hc - 88) % 80 == 63 ||
+                    (vc - 8) % 80 == 0 || (vc - 8) % 80 == 63))
+      begin
+        __rgb_out <= 8'b00000000;
+      end else begin
+        __rgb_out <= {__r, __g, __b};
+      end
     end else begin
       __rgb_out <= 8'b00000000;
     end
@@ -74,4 +121,5 @@ module vga_timing(clk100_in, rgb_out, hs_out, vs_out);
   assign hs_out = __hs_out;
   assign vs_out = __vs_out;
   assign rgb_out = __rgb_out;
+  assign addr = __addr;
 endmodule

@@ -50,9 +50,9 @@ module matcher(clk, rst, sel_bus, hidden_bus, r, g, b,
       __en <= 0;
       __reading <= 0;
       __sel_acc <= 0;
-      __addr = 0;
-      __ms = 0;
-      __mf = 0;
+      __addr <= 0;
+      __ms <= 0;
+      __mf <= 0;
     end else begin
       
       // If the matcher is in its initial state, check sel_bus to see if there
@@ -192,8 +192,8 @@ module matcher(clk, rst, sel_bus, hidden_bus, r, g, b,
           __g1 <= g;
           __b1 <= b;
           
-          __row = __coord0 / 6;
-          __col = __coord0 % 6;
+          __row <= __coord0 / 6;
+          __col <= __coord0 % 6;
         end
       end
       
@@ -204,8 +204,8 @@ module matcher(clk, rst, sel_bus, hidden_bus, r, g, b,
           if (__row == 0) begin
             if (__which == 0) begin
               __which <= 1;
-              __row = __coord1 / 6;
-              __col = __coord1 % 6;
+              __row <= __coord1 / 6;
+              __col <= __coord1 % 6;
             end
             
             if (__which == 1) begin
@@ -229,8 +229,8 @@ module matcher(clk, rst, sel_bus, hidden_bus, r, g, b,
           if (__col == 5) begin
             if (__which == 0) begin
               __which <= 1;
-              __row = __coord1 / 6;
-              __col = __coord1 % 6;
+              __row <= __coord1 / 6;
+              __col <= __coord1 % 6;
             end
             
             if (__which == 1) begin
@@ -259,8 +259,8 @@ module matcher(clk, rst, sel_bus, hidden_bus, r, g, b,
           if (__row == 5) begin
             if (__which == 0) begin
               __which <= 1;
-              __row = __coord1 / 6;
-              __col = __coord1 % 6;
+              __row <= __coord1 / 6;
+              __col <= __coord1 % 6;
             end
             
             if (__which == 1) begin
@@ -289,8 +289,8 @@ module matcher(clk, rst, sel_bus, hidden_bus, r, g, b,
           if (__col == 0) begin
             if (__which == 0) begin
               __which <= 1;
-              __row = __coord1 / 6;
-              __col = __coord1 % 6;
+              __row <= __coord1 / 6;
+              __col <= __coord1 % 6;
             end
             
             if (__which == 1) begin
