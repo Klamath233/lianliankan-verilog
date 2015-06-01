@@ -1,4 +1,3 @@
--- 640 x 480
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -18,9 +17,11 @@ end vga_timing;
 
 architecture behavioral of vga_timing is
 signal clk25: std_logic := '0';
+signal clk2: std_logic := '0';
 signal hc : std_logic_vector(9 downto 0) := "0000000000";
 signal vc : std_logic_vector(9 downto 0) := "0000000000";
 signal counter : std_logic_vector(1 downto 0) := "00";
+signal clk2_counter : std_logic_vector(24 downto 0) := "0000000000000000000000000";
 
 begin
 
@@ -35,6 +36,19 @@ begin
 				counter <= "00";
 			else
 				clk25 <= '0';
+			end if;
+		end if;
+	end process;
+  
+  process(clk100_in)
+	begin
+		if clk100_in'event and clk100_in='1' then
+			counter <= counter+'1';
+			if counter = "1011111010111100000111111" then
+				clk2 <= '1';
+				counter <= "0000000000000000000000000";
+			else
+				clk2 <= '0';
 			end if;
 		end if;
 	end process;
