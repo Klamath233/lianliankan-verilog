@@ -1,5 +1,13 @@
 `timescale 1ns / 1ps
 
+/** @file input_module.v
+ *  @author Xi Han
+ *  
+ *  This file is adapted from the input module of lab 3 since the functionality
+ *  is the same; it debounces all the inputs. However, different from lab 3, the
+ *  sampling clock is implmented inside this file.
+ *
+ */
 module input_module(up_in,  right_in,  down_in,  left_in, s_in,
                     up_out, right_out, down_out, left_out, s_out,
                     clk);
