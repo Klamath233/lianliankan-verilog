@@ -215,8 +215,22 @@ module matcher(clk, rst, sel_bus, hidden_bus, r, g, b,
       
       // Data is all ready, we can start to compute.
       if (__en && __ready) begin
+
         // Searching UP.
         if (__dir == 0) begin
+          // First, see whether the colors match; assert failure if not.
+          if (__r0 != __r1 || __g0 != __g1 || __b0 != __b1) begin
+            __mf <= 1;
+            __en <= 0;
+            __reading <= 0;
+            __ready <= 0;
+            
+            __row <= 0;
+            __col <= 0;
+            __which <= 0;
+            __dir <= 0;
+          end
+
           if (__row == 0) begin
             if (__which == 0) begin
               __which <= 1;
