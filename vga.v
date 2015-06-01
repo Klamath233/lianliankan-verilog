@@ -1,5 +1,21 @@
 `timescale 1ns / 1ps
 
+/** @file vga.v
+ *  @author Xi Han
+ *  
+ *  This file is the translated and modified version of the VHDL vga template
+ *  provided. Besides the direct translation of the original file, it includes
+ *  a 2Hz clock for blinking the card under the cursor. It also listens to the
+ *  buses for the data it needs to display the cards. It displays a colored,
+ *  64 x 64 block if the card is in the normal state. It displays a blinking
+ *  block if the card is under cursor. It displays a white box outside the block
+ *  if the card is selected.
+ *
+ *  Some formula useful to compute the row number and colume number:
+ *  row = (vc - 8) / 80, given vc < 480 - 8.
+ *  col = (hc - 88) / 80, given hc < 640 - 88.
+ */
+
 module vga_timing(clk100_in, r, g, b, hidden_bus, blink_bus, sel_bus,
                   rgb_out, hs_out, vs_out, addr);
 
@@ -42,7 +58,7 @@ module vga_timing(clk100_in, r, g, b, hidden_bus, blink_bus, sel_bus,
     __blink_bus <= blink_bus;
     __sel_bus <= __sel_bus;
     if (hc >= 88 && vc >= 8) begin
-      __addr <= (hc - 88) / 80 * 6 + (vc - 8) / 80;
+      __addr <= (vc - 88) / 80 * 6 + (hc - 8) / 80;
     end
     __r <= r;
     __g <= g;
@@ -75,9 +91,9 @@ module vga_timing(clk100_in, r, g, b, hidden_bus, blink_bus, sel_bus,
           vc < 8 || vc >= 472 || (vc - 8) % 80 >= 64)
       begin
         __rgb_out <= 8'b00000000;
-      end else if (__hidden_bus[(hc - 88) / 80 * 6 + (vc - 8) / 80] == 1) begin
+      end else if (__hidden_bus[(hc - 88) / 80 + (vc - 8) / 80 * 6] == 1) begin
         __rgb_out <= 8'b00000000;
-      end else if (__blink_bus[(hc - 88) / 80 * 6 + (vc - 8) / 80] == 1
+      end else if (__blink_bus[(hc - 88) / 80 + (vc - 8) / 80 * 6] == 1
                    && clk2 == 1)
       begin
         __rgb_out <= 8'b00000000;
