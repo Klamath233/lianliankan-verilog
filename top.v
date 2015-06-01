@@ -1,5 +1,12 @@
 `timescale 1ns / 1ps
 
+/** @file top.v
+ *  @author Xi Han
+ *  
+ *  This top level module connect all components together.
+ *
+ */
+
 module top(clk, up, down, left, right, s,
            rgb_out, hs_out, vs_out);
 
