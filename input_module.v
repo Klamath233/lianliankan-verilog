@@ -8,6 +8,7 @@
  *  sampling clock is implmented inside this file.
  *
  */
+ 
 module input_module(up_in,  right_in,  down_in,  left_in, s_in,
                     up_out, right_out, down_out, left_out, s_out,
                     clk);
