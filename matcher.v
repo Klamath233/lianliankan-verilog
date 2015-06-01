@@ -1,5 +1,21 @@
 `timescale 1ns / 1ps
 
+/** @file matcher.v
+ *  @author Xi Han
+ *  
+ *  This file implements the core algorithm of the game. The game rule says two
+ *  cards match if they have the same color and they can reach the same border
+ *  of the board; that is, there is no other cards between each of them and the
+ *  border. The module implements a complex finite state machine which do two
+ *  things. The first is that it reads all information it needs to its internal
+ *  registers for the convenience of computation. The other is that it walks
+ *  through all four directions trying to find a solution. If a solution is
+ *  found, the module asserts ms; if no solution is found, it asserts mf. While
+ *  it is finding the solution or loading the data, it does not assert either
+ *  of the signals.
+ *
+ */
+
 module matcher(clk, rst, sel_bus, hidden_bus, r, g, b,
                addr, ms, mf);
 
