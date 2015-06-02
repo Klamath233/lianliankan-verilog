@@ -35,7 +35,7 @@ module board(clk, addr, r, g, b);
       1: begin
         __r <= 5;
         __g <= 2;
-        __b <= 4;
+        __b <= 3;
       end
       
       2: begin
@@ -101,7 +101,7 @@ module board(clk, addr, r, g, b);
       12: begin
         __r <= 0;
         __g <= 5;
-        __b <= 4;
+        __b <= 3;
       end
       
       13: begin
@@ -119,7 +119,7 @@ module board(clk, addr, r, g, b);
       15: begin
         __r <= 2;
         __g <= 3;
-        __b <= 4;
+        __b <= 3;
       end
       
       16: begin
@@ -137,7 +137,7 @@ module board(clk, addr, r, g, b);
       18: begin
         __r <= 0;
         __g <= 5;
-        __b <= 4;
+        __b <= 3;
       end
       
       19: begin
@@ -155,13 +155,13 @@ module board(clk, addr, r, g, b);
       21: begin
         __r <= 2;
         __g <= 3;
-        __b <= 4;
+        __b <= 3;
       end
       
       22: begin
         __r <= 5;
         __g <= 2;
-        __b <= 4;
+        __b <= 3;
       end
       
       23: begin
@@ -173,7 +173,7 @@ module board(clk, addr, r, g, b);
       24: begin
         __r <= 4;
         __g <= 5;
-        __b <= 4;
+        __b <= 3;
       end
       
       25: begin
@@ -209,7 +209,7 @@ module board(clk, addr, r, g, b);
       30: begin
         __r <= 4;
         __g <= 5;
-        __b <= 4;
+        __b <= 3;
       end
       
       31: begin

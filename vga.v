@@ -48,7 +48,7 @@ module vga_timing(clk100_in, r, g, b, hidden_bus, blink_bus, sel_bus,
   reg [35:0] __sel_bus;
   reg [2:0] __r;
   reg [2:0] __g;
-  reg [2:0] __b;
+  reg [1:0] __b;
   
   reg [5:0] __addr;
   
@@ -56,9 +56,9 @@ module vga_timing(clk100_in, r, g, b, hidden_bus, blink_bus, sel_bus,
   always @(posedge clk100_in) begin
     __hidden_bus <= hidden_bus;
     __blink_bus <= blink_bus;
-    __sel_bus <= __sel_bus;
+    __sel_bus <= sel_bus;
     if (hc >= 88 && vc >= 8) begin
-      __addr <= (vc - 88) / 80 * 6 + (hc - 8) / 80;
+      __addr <= (hc - 88) / 80 + (vc - 8) / 80 * 6;
     end
     __r <= r;
     __g <= g;
@@ -97,11 +97,11 @@ module vga_timing(clk100_in, r, g, b, hidden_bus, blink_bus, sel_bus,
                    && clk2 == 1)
       begin
         __rgb_out <= 8'b00000000;
-      end else if (__sel_bus[(hc - 88) / 80 * 6 + (vc - 8) / 80] == 1 &&
+      end else if (__sel_bus[(hc - 88) / 80 + (vc - 8) / 80 * 6] == 1 &&
                    ((hc - 88) % 80 == 0 || (hc - 88) % 80 == 63 ||
                     (vc - 8) % 80 == 0 || (vc - 8) % 80 == 63))
       begin
-        __rgb_out <= 8'b00000000;
+        __rgb_out <= 8'b11111111;
       end else begin
         __rgb_out <= {__r, __g, __b};
       end

@@ -26,13 +26,13 @@ module input_module(up_in,  right_in,  down_in,  left_in, s_in,
   output down_out;
   output left_out;
   
-  reg [16:0] counter = 0;
+  reg [18:0] counter = 0;
   reg __clk_1khz = 0;
   wire clk_1khz;
   
   always @(posedge clk) begin
     counter <= counter + 1;
-    if (counter == 49999) begin
+    if (counter == 499999) begin
       __clk_1khz <= ~clk_1khz;
       counter <= 0;
     end else begin
@@ -65,6 +65,7 @@ module input_module(up_in,  right_in,  down_in,  left_in, s_in,
     .CLK(clk_1khz),
     .SIG_OUT(left_out)
   );
+  
   debounce d_s (
     .SIG_IN(s_in),
     .CLK(clk_1khz),
