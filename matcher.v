@@ -41,7 +41,7 @@ module matcher(clk, rst, sel_bus, hidden_bus, r, g, b,
   reg __which = 0;
   reg __en = 0;
   reg __adding = 0;
-  reg [1:0] __reading = 0;
+  reg [2:0] __reading = 0;
   reg __ready = 0;
   
   reg [5:0] __coord0;
@@ -53,6 +53,9 @@ module matcher(clk, rst, sel_bus, hidden_bus, r, g, b,
   reg [2:0] __r1;
   reg [2:0] __g1;
   reg [1:0] __b1;
+  reg [2:0] __r;
+  reg [2:0] __g;
+  reg [1:0] __b;
   
   reg [1:0] __sel_acc = 0;
   integer i;
@@ -71,7 +74,8 @@ module matcher(clk, rst, sel_bus, hidden_bus, r, g, b,
       __mf <= 0;
     end else begin
       
-      // If the matcher is in its initial state, check sel_bus to see if there
+      
+      // If the matcher is in its initial state and it is free, check sel_bus to see if there
       // are two cards selected.
       if (!__en && !__adding) begin
         __sel_acc <= sel_bus[0] + sel_bus[1] + sel_bus[2] + sel_bus[3] +
@@ -186,23 +190,46 @@ module matcher(clk, rst, sel_bus, hidden_bus, r, g, b,
         end
         
         if (__reading == 1) begin
-          __addr <= __coord0;
-          __reading <= 2;
+          if (__hidden_buf[__coord1] || __hidden_buf[__coord0]) begin
+            __ms <= 0;
+            __mf <= 0;
+            __en <= 0;
+            __reading <= 0;
+            __ready <= 0;
+              
+            __row <= 0;
+            __col <= 0;
+            __which <= 0;
+            __dir <= 0;
+          end else begin
+            __reading <= 2;
+          end
         end
         
         if (__reading == 2) begin
-          __addr <= __coord1;
+          __addr <= __coord0;
           __reading <= 3;
+        end
+        
+        if (__reading == 3) begin
+          __addr <= __coord1;
+          __reading <= 4;
+          
+        end
+        
+        if (__reading == 4) begin
+          __addr <= 0;
+          __reading <= 5;
           
           __r0 <= r;
           __g0 <= g;
           __b0 <= b;
+          
         end
         
-        if (__reading == 3) begin
-          __addr <= 0;
-          __reading <= 0;
+        if (__reading == 5) begin
           __ready <= 1;
+          __reading <= 0;
           
           __r1 <= r;
           __g1 <= g;

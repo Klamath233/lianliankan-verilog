@@ -53,12 +53,13 @@ module vga_timing(clk100_in, r, g, b, hidden_bus, blink_bus, sel_bus,
   reg [5:0] __addr;
   
   // This block read all the data needed from the other modules.
+  // IMPORTANT: note that the reading of the color information takes two cycles.
   always @(posedge clk100_in) begin
     __hidden_bus <= hidden_bus;
     __blink_bus <= blink_bus;
     __sel_bus <= sel_bus;
-    if (hc >= 88 && vc >= 8) begin
-      __addr <= (hc - 88) / 80 + (vc - 8) / 80 * 6;
+    if (hc >= 87 && vc >= 8) begin
+      __addr <= (hc + 1 - 88) / 80 + (vc - 8) / 80 * 6;
     end
     __r <= r;
     __g <= g;
