@@ -84,6 +84,13 @@ module functional_test;
     // Add stimulus here
     
     down = 1; #10; down = 0; #1000;
+    s = 1; #10; s = 0; #1000;
+    down = 1; #10; down = 0; #1000;
+    s = 1; #10; s = 0; #1000;
+    s = 1; #10; s = 0; #1000;
+    s = 1; #10; s = 0; #1000;
+    
+/*    down = 1; #10; down = 0; #1000;
     down = 1; #10; down = 0; #1000;
     s = 1; #10; s = 0; #1000;
     down = 1; #10; down = 0; #1000;
@@ -214,7 +221,7 @@ module functional_test;
     down = 1; #10; down = 0; #1000;
     down = 1; #10; down = 0; #1000;
     down = 1; #10; down = 0; #1000;
-    s = 1; #10; s = 0; #1000;
+    s = 1; #10; s = 0; #1000;*/
     
     #5000;
     $finish;

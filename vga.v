@@ -58,8 +58,8 @@ module vga_timing(clk100_in, r, g, b, hidden_bus, blink_bus, sel_bus,
     __hidden_bus <= hidden_bus;
     __blink_bus <= blink_bus;
     __sel_bus <= sel_bus;
-    if (hc >= 87 && vc >= 8) begin
-      __addr <= (hc + 1 - 88) / 80 + (vc - 8) / 80 * 6;
+    if (hc >= 88 && vc >= 8) begin
+      __addr <= (hc - 88) / 80 + (vc - 8) / 80 * 6;
     end
     __r <= r;
     __g <= g;

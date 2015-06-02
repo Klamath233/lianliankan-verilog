@@ -35,6 +35,7 @@ module matcher(clk, rst, sel_bus, hidden_bus, r, g, b,
   reg [5:0] __addr = 0;
   reg __ms = 0;
   reg __mf = 0;
+  reg [2:0] __cooldown = 3;
   
   reg [2:0] __row = 0;
   reg [2:0] __col = 0;
@@ -73,12 +74,17 @@ module matcher(clk, rst, sel_bus, hidden_bus, r, g, b,
       __addr <= 0;
       __ms <= 0;
       __mf <= 0;
+      __cooldown <= 3;
     end else begin
       
       
       // If the matcher is in its initial state and it is free, check sel_bus to see if there
       // are two cards selected.
-      if (!__en && !__adding) begin
+      if (__cooldown != 0 && !__en) begin
+        __cooldown <= __cooldown - 1;
+      end
+      
+      if (!__en && !__adding && __cooldown == 0) begin
         __sel_acc <= sel_bus[0] + sel_bus[1] + sel_bus[2] + sel_bus[3] +
                      sel_bus[4] + sel_bus[5] + sel_bus[6] + sel_bus[7] +
                      sel_bus[8] + sel_bus[9] + sel_bus[10] + sel_bus[11] +
@@ -94,7 +100,7 @@ module matcher(clk, rst, sel_bus, hidden_bus, r, g, b,
         __mf <= 0;
       end
       
-      if (!__en && __adding) begin
+      if (!__en && __adding && __cooldown == 0) begin
         if (__sel_acc == 2) begin
           __en <= 1;
         end else begin
@@ -106,7 +112,7 @@ module matcher(clk, rst, sel_bus, hidden_bus, r, g, b,
       
       // Save the state of the hidden bus and issue the read request to the
       // board.
-      if (__en && !__ready) begin
+      if (__en && !__ready && __cooldown == 0) begin
         if (__reading == 0) begin
           casez (sel_bus)
             36'b1???????????????????????????????????: __coord0 <= 35;
@@ -242,7 +248,7 @@ module matcher(clk, rst, sel_bus, hidden_bus, r, g, b,
       end
       
       // Data is all ready, we can start to compute.
-      if (__en && __ready) begin
+      if (__en && __ready && __cooldown == 0) begin
 
         // Searching UP.
         if (__dir == 0) begin
@@ -257,6 +263,7 @@ module matcher(clk, rst, sel_bus, hidden_bus, r, g, b,
             __col <= 0;
             __which <= 0;
             __dir <= 0;
+            __cooldown <= 3;
           end
 
           if (__row == 0) begin
@@ -271,6 +278,7 @@ module matcher(clk, rst, sel_bus, hidden_bus, r, g, b,
               __en <= 0;
               __reading <= 0;
               __ready <= 0;
+              __cooldown <= 3;
             end
           end else if (__hidden_buf[6 * (__row - 1) + __col] == 1) begin
             __row <= __row - 1;
@@ -301,6 +309,7 @@ module matcher(clk, rst, sel_bus, hidden_bus, r, g, b,
               __col <= 0;
               __which <= 0;
               __dir <= 0;
+              __cooldown <= 3;
             end
           end else if (__hidden_buf[6 * __row + __col + 1] == 1) begin
             __col <= __col + 1;
@@ -331,6 +340,7 @@ module matcher(clk, rst, sel_bus, hidden_bus, r, g, b,
               __col <= 0;
               __which <= 0;
               __dir <= 0;
+              __cooldown <= 3;
             end
           end else if (__hidden_buf[6 * (__row + 1) + __col] == 1) begin
             __row <= __row + 1;
@@ -361,6 +371,7 @@ module matcher(clk, rst, sel_bus, hidden_bus, r, g, b,
               __col <= 0;
               __which <= 0;
               __dir <= 0;
+              __cooldown <= 3;
             end
           end else if (__hidden_buf[6 * __row + __col - 1] == 1) begin
             __col <= __col - 1;
@@ -374,6 +385,7 @@ module matcher(clk, rst, sel_bus, hidden_bus, r, g, b,
             __col <= 0;
             __which <= 0;
             __dir <= 0;
+            __cooldown <= 3;
           end
         end
       end

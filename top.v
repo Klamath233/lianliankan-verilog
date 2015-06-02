@@ -8,7 +8,8 @@
  */
 
 module top(clk, up, down, left, right, s,
-           rgb_out, hs_out, vs_out);
+           rgb_out, hs_out, vs_out,
+           up_d, down_d, left_d, right_d, s_d);
 
   input clk;
   input up;
@@ -20,6 +21,11 @@ module top(clk, up, down, left, right, s,
   output [7:0] rgb_out;
   output hs_out;
   output vs_out;
+  output up_d;
+  output down_d;
+  output left_d;
+  output right_d;
+  output s_d;
   
   wire [5:0] addr_0;
   wire [5:0] addr_1;
@@ -61,7 +67,7 @@ module top(clk, up, down, left, right, s,
   card_array ca (
     .clk(clk),
     .rst(),
-    .s(s_d),
+    .s(s),
     .mf(mf),
     .ms(ms),
     .cur_bus(cur_bus),
@@ -88,10 +94,10 @@ module top(clk, up, down, left, right, s,
   cursor cursor (
     .clk(clk),
     .rst(),
-    .up(up_d),
-    .down(down_d),
-    .left(left_d), 
-    .right(right_d),
+    .up(up),
+    .down(down),
+    .left(left), 
+    .right(right),
     .cur_bus(cur_bus)
   );
   
