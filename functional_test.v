@@ -2,9 +2,9 @@
 
 module functional_test;
 
-	// Inputs
-	reg clk;
-	reg rst;
+  // Inputs
+  reg clk;
+  reg rst;
   reg up;
   reg down;
   reg left;
@@ -13,30 +13,30 @@ module functional_test;
   
   wire [35:0] blink_bus;
   wire [35:0] cur_bus;
-	wire [35:0] sel_bus;
-	wire [35:0] hidden_bus;
-	wire [2:0] r;
-	wire [2:0] g;
-	wire [1:0] b;
+  wire [35:0] sel_bus;
+  wire [35:0] hidden_bus;
+  wire [2:0] r;
+  wire [2:0] g;
+  wire [1:0] b;
 
-	// Outputs
-	wire [5:0] addr;
-	wire ms;
-	wire mf;
+  // Outputs
+  wire [5:0] addr;
+  wire ms;
+  wire mf;
 
-	// Instantiate the Units Under Test (UUTs)
-	matcher matcher (
-		.clk(clk), 
-		.rst(rst), 
-		.sel_bus(sel_bus), 
-		.hidden_bus(hidden_bus), 
-		.r(r), 
-		.g(g), 
-		.b(b), 
-		.addr(addr), 
-		.ms(ms), 
-		.mf(mf)
-	);
+  // Instantiate the Units Under Test (UUTs)
+  matcher matcher (
+    .clk(clk), 
+    .rst(rst), 
+    .sel_bus(sel_bus), 
+    .hidden_bus(hidden_bus), 
+    .r(r), 
+    .g(g), 
+    .b(b), 
+    .addr(addr), 
+    .ms(ms), 
+    .mf(mf)
+  );
 
   board bd0 (
     .clk(clk),
@@ -68,18 +68,18 @@ module functional_test;
     .cur_bus(cur_bus)
   );
   
-	initial begin
-		// Initialize Inputs
-		clk = 0;
-		rst = 0;
-		up = 0;
+  initial begin
+    // Initialize Inputs
+    clk = 0;
+    rst = 0;
+    up = 0;
     down = 0;
     left = 0;
     right = 0;
     s = 0;
     
-		// Wait 100 ns for global reset to finish
-		#100;
+    // Wait 100 ns for global reset to finish
+    #100;
     
     // Add stimulus here
     
@@ -219,7 +219,7 @@ module functional_test;
     #5000;
     $finish;
     
-	end
+  end
   always #5 clk = ~clk;
 endmodule
 
