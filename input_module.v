@@ -11,7 +11,7 @@
  
 module input_module(up_in,  right_in,  down_in,  left_in, s_in,
                     up_out, right_out, down_out, left_out, s_out,
-                    clk);
+                    clk, en);
   
   input up_in;
   input right_in;
@@ -19,6 +19,7 @@ module input_module(up_in,  right_in,  down_in,  left_in, s_in,
   input left_in;
   input s_in;
   input clk;
+  input en;
   
   output s_out;
   output up_out;
@@ -31,12 +32,14 @@ module input_module(up_in,  right_in,  down_in,  left_in, s_in,
   wire clk_1khz;
   
   always @(posedge clk) begin
-    counter <= counter + 1;
-    if (counter == 499999) begin
-      __clk_1khz <= ~clk_1khz;
-      counter <= 0;
-    end else begin
-      __clk_1khz <= clk_1khz;
+    if (en) begin
+      counter <= counter + 1;
+      if (counter == 499999) begin
+        __clk_1khz <= ~clk_1khz;
+        counter <= 0;
+      end else begin
+        __clk_1khz <= clk_1khz;
+      end
     end
   end
   

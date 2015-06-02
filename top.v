@@ -40,6 +40,7 @@ module top(clk, up, down, left, right, s,
   wire left_d;
   wire right_d;
   wire s_d;
+  wire en;
   
   board bd0 (
     .clk(clk),
@@ -70,6 +71,7 @@ module top(clk, up, down, left, right, s,
   );
   
   input_module im (
+    .en(en),
     .up_in(up),
     .right_in(right),
     .down_in(down),
@@ -103,7 +105,8 @@ module top(clk, up, down, left, right, s,
     .b(b0),
     .addr(addr_0),
     .ms(ms),
-    .mf(mf)
+    .mf(mf),
+    .en_input(en)
   );
   
   vga_timing vga (

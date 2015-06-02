@@ -17,7 +17,7 @@
  */
 
 module matcher(clk, rst, sel_bus, hidden_bus, r, g, b,
-               addr, ms, mf);
+               addr, ms, mf, en_input);
 
   input clk;
   input rst;
@@ -30,6 +30,7 @@ module matcher(clk, rst, sel_bus, hidden_bus, r, g, b,
   output [5:0] addr;
   output ms;
   output mf;
+  output en_input; // "mask the interrupt during computation :D"
   
   reg [5:0] __addr = 0;
   reg __ms = 0;
@@ -382,5 +383,6 @@ module matcher(clk, rst, sel_bus, hidden_bus, r, g, b,
   assign addr = __addr;
   assign ms = __ms;
   assign mf = __mf;
+  assign en_input = ~__en;
 
 endmodule
