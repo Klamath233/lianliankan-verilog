@@ -7,11 +7,12 @@
  *
  */
 
-module top(clk, up, down, left, right, s,
+module top(clk, rst, up, down, left, right, s,
            rgb_out, hs_out, vs_out,
            up_d, down_d, left_d, right_d, s_d);
 
   input clk;
+  input rst;
   input up;
   input down;
   input left;
@@ -47,9 +48,16 @@ module top(clk, up, down, left, right, s,
   wire right_d;
   wire s_d;
   wire en;
+  wire clk_fsm;
+  
+  clock_module cm (
+    .clk_in_100m_hz(clk),
+    .clk_out_1000_hz(),
+    .clk_out_100_hz(clk_fsm)
+  );
   
   board bd0 (
-    .clk(clk),
+    .clk(clk_fsm),
     .addr(addr_0),
     .r(r0),
     .g(g0),
@@ -65,8 +73,8 @@ module top(clk, up, down, left, right, s,
   );
   
   card_array ca (
-    .clk(clk),
-    .rst(),
+    .clk(clk_fsm),
+    .rst(rst),
     .s(s),
     .mf(mf),
     .ms(ms),
@@ -92,8 +100,8 @@ module top(clk, up, down, left, right, s,
   );
   
   cursor cursor (
-    .clk(clk),
-    .rst(),
+    .clk(clk_fsm),
+    .rst(rst),
     .up(up),
     .down(down),
     .left(left), 
@@ -102,8 +110,8 @@ module top(clk, up, down, left, right, s,
   );
   
   matcher matcher (
-    .clk(clk),
-    .rst(),
+    .clk(clk_fsm),
+    .rst(rst),
     .sel_bus(sel_bus),
     .hidden_bus(hidden_bus),
     .r(r0),
@@ -117,6 +125,7 @@ module top(clk, up, down, left, right, s,
   
   vga_timing vga (
     .clk100_in(clk),
+    .clk100hz_in(clk_fsm),
     .r(r1),
     .g(g1),
     .b(b1),

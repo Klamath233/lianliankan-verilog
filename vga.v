@@ -16,10 +16,11 @@
  *  col = (hc - 88) / 80, given hc < 640 - 88.
  */
 
-module vga_timing(clk100_in, r, g, b, hidden_bus, blink_bus, sel_bus,
+module vga_timing(clk100_in, clk100hz_in, r, g, b, hidden_bus, blink_bus, sel_bus,
                   rgb_out, hs_out, vs_out, addr);
 
   input clk100_in;
+  input clk100hz_in;
   input [35:0] hidden_bus;
   input [35:0] blink_bus;
   input [35:0] sel_bus;

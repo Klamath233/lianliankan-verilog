@@ -46,38 +46,33 @@ module input_module(up_in,  right_in,  down_in,  left_in, s_in,
   assign clk_1khz = __clk_1khz;
   
   debounce d_up (
-    .btn(up_in),
-    .rst(),
-    .clk(clk_1khz),
-    .vld(up_out)
+    .SIG_IN(up_in),
+    .CLK(clk_1khz),
+    .SIG_OUT(up_out)
   );
 
   debounce d_right (
-    .btn(right_in),
-    .rst(),
-    .clk(clk_1khz),
-    .vld(right_out)
+    .SIG_IN(right_in),
+    .CLK(clk_1khz),
+    .SIG_OUT(right_out)
   );
 
   debounce d_down (
-    .btn(down_in),
-    .rst(),
-    .clk(clk_1khz),
-    .vld(down_out)
+    .SIG_IN(down_in),
+    .CLK(clk_1khz),
+    .SIG_OUT(down_out)
   );
 
   debounce d_left (
-    .btn(left_in),
-    .rst(),
-    .clk(clk_1khz),
-    .vld(left_out)
+    .SIG_IN(left_in),
+    .CLK(clk_1khz),
+    .SIG_OUT(left_out)
   );
   
   debounce d_s (
-    .btn(s_in),
-    .rst(),
-    .clk(clk_1khz),
-    .vld(s_out)
+    .SIG_IN(s_in),
+    .CLK(clk_1khz),
+    .SIG_OUT(s_out)
   );
 
 endmodule
